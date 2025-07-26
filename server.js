@@ -22,29 +22,17 @@ if (!mongoURI) {
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('✅ MongoDB connected'))
-    .catch(err => console.error('❌ MongoDB connection error:', err.message)); // Log only the message for clarity
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch(err => console.error('❌ MongoDB connection error:', err.message)); // Log only the message for clarity
 
-// ----------------------------------------------------
-// IMPORTANT: CORS Configuration - MODIFIED HERE
-app.use(cors({
-    origin: 'https://websitetrackerfrontend.onrender.com', // <--- Your FRONTEND URL here!
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'] // Allowed headers
-}));
-// ----------------------------------------------------
-
+app.use(cors());
 app.use(express.json());
 
-// Serve static files from the 'public' directory
-// IMPORTANT: If your frontend is deployed separately, this line still serves these files
-// if someone directly accesses your backend URL with a path like /index.html.
-// Your main frontend access will now be via https://websitetrackerfrontend.onrender.com/.
 app.use(express.static(path.join(__dirname, 'public')));
 
 // API routes
 app.use('/api', auditRoutes);
 
 app.listen(port, () => {
-    console.log(`🚀 Server running on http://localhost:${port}`);
+  console.log(`🚀 Server running on http://localhost:${port}`);
 });
